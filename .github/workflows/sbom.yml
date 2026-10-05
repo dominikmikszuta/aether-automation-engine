@@ -1,13 +1,32 @@
 name: SBOM
-on: [push]
+on:
+  push:
+    branches: [ main ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   syft:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: anchore/sbom-action@v0
+
+      - name: Generate SBOM with Syft
+        uses: anchore/sbom-action@v0
         with:
           format: spdx-json
           output-file: sbom.spdx.json
-      - uses: actions/upload-artifact@v4
-        with: { name: sbom, path: sbom.spdx.json }
+          artifact-name: sbom-spdx-json
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sbom-artifact
+          path: sbom.spdx.json
+          if-no-files-found: warn
