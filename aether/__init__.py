@@ -1,0 +1,6 @@
+"""AETHER-QM: Quantum Meta Automation Engine v26.0.0."""
+__version__ = "26.0.0"
+__codename__ = "Quantum Meta"
+__author__ = "Dominik Mikszuta"
+__email__ = "dominik.mikszuta@outlook.com"
+__license__ = "MIT"

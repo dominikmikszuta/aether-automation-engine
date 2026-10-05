@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "aether-qm"
+version = "26.0.0"
+description = "AETHER-QM: Quantum Meta Automation Engine."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Dominik Mikszuta", email = "dominik.mikszuta@outlook.com" }]
+dependencies = ["fpdf2>=2.7.0", "Pillow>=10.0.0"]
+[project.scripts]
+aether = "aether.cli:main"
+[tool.setuptools.packages.find]
+include = ["aether*"]
