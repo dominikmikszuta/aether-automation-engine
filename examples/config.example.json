@@ -1,0 +1,5 @@
+{
+  "author": {"name": "Dominik Mikszuta", "email": "dominik.mikszuta@outlook.com"},
+  "output": {"directory": "output", "portfolio_name": "portfolio.pdf"},
+  "backup": {"enabled": true, "destination": "backup"}
+}
