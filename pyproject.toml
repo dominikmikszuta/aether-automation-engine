@@ -11,6 +11,7 @@ license = { text = "MIT" }
 authors = [{ name = "Dominik Mikszuta", email = "dominik.mikszuta@outlook.com" }]
 dependencies = ["fpdf2>=2.7.0", "Pillow>=10.0.0"]
 [project.scripts]
+vanguard = "aether.vanguard:main"
 aether = "aether.cli:main"
 [tool.setuptools.packages.find]
 include = ["aether*"]
