@@ -4,10 +4,11 @@ import json, time
 from pathlib import Path
 
 class Cipher:
-    def __init__(self, key_dir, rotation_days=90):
+    def __init__(self, key_dir, rotation_days=90, fast_kdf=True):
         self.key_dir = Path(key_dir)
         self.key_dir.mkdir(parents=True, exist_ok=True)
         self.rotation_seconds = rotation_days * 86400
+        self.fast_kdf = fast_kdf
 
     def _meta_path(self):
         return self.key_dir / "meta.json"
@@ -30,7 +31,7 @@ class Cipher:
         key_path = self.key_dir / f"{name}-{key_id}"
 
         # Symmetric key
-        sym_key, salt = derive_key(key_id, length=32)
+        sym_key, salt = derive_key(key_id, length=32, fast=self.fast_kdf)
         (self.key_dir / f"{name}-{key_id}.sym").write_bytes(salt + sym_key)
 
         # Asymmetric
