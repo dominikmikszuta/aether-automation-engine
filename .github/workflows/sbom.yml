@@ -1,37 +1,28 @@
 name: SBOM
-
 on:
   push:
     branches: [ main ]
   release:
     types: [ published ]
   workflow_dispatch:
-
 permissions:
   contents: read
   actions: read
-
 jobs:
   syft:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Generate SBOM
-        uses: anchore/sbom-action@v0
+      - uses: actions/checkout@v4
+      - uses: anchore/sbom-action@v0
         with:
           format: spdx-json
           output-file: sbom.spdx.json
           artifact-name: sbom-spdx-json
           upload-artifact: true
           upload-release-assets: false
-
-      - name: Upload SBOM artifact
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: sbom-artifact
           path: sbom.spdx.json
           if-no-files-found: warn
-          retention-days: 30

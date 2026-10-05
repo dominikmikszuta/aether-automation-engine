@@ -28,8 +28,7 @@ class Metrics:
         return cls._instance
 
     def record(self, name, value, unit="", **tags):
-        m = Metric(name=name, value=value, unit=unit, tags=tags)
-        self._metrics[name].append(m)
+        self._metrics[name].append(Metric(name=name, value=value, unit=unit, tags=tags))
 
     def increment(self, name, delta=1.0, **tags):
         self._counters[name] += delta
