@@ -1,9 +1,11 @@
 """TITAN - Cron-like workload scheduler."""
 from __future__ import annotations
-import time, threading
-from dataclasses import dataclass, field
+import threading
+import time
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Callable
+
 
 @dataclass
 class Job:
@@ -14,6 +16,7 @@ class Job:
     runs: int = 0
     errors: int = 0
     enabled: bool = True
+
 
 class Scheduler:
     def __init__(self):
@@ -28,12 +31,12 @@ class Scheduler:
     def unregister(self, name):
         self._jobs.pop(name, None)
 
-    def _tick(self):
+    def _tick(self, force=False):
         now = time.time()
         for job in self._jobs.values():
             if not job.enabled:
                 continue
-            if now - job.last_run < job.interval:
+            if not force and (now - job.last_run) < job.interval:
                 continue
             try:
                 job.fn()
@@ -46,7 +49,7 @@ class Scheduler:
     def _run_loop(self):
         while not self._stop.is_set():
             self._tick()
-            self._stop.wait(1.0)
+            self._stop.wait(0.05)
 
     def start(self):
         if self._thread and self._thread.is_alive():
@@ -61,7 +64,8 @@ class Scheduler:
             self._thread.join(timeout=5)
 
     def run_once(self):
-        self._tick()
+        """Force-run all jobs ignoring interval."""
+        self._tick(force=True)
 
     def status(self):
         return [{

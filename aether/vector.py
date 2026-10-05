@@ -27,10 +27,7 @@ class Pipeline:
         return self
 
     def batch(self, size):
-        batches = []
-        for i in range(0, len(self._data), size):
-            batches.append(self._data[i:i + size])
-        self._data = batches
+        self._data = [self._data[i:i + size] for i in range(0, len(self._data), size)]
         return self
 
     def collect(self):
@@ -40,10 +37,7 @@ class Pipeline:
         if not self._data:
             return initial
         it = iter(self._data)
-        if initial is None:
-            acc = next(it)
-        else:
-            acc = initial
+        acc = next(it) if initial is None else initial
         for x in it:
             acc = fn(acc, x)
         return acc
